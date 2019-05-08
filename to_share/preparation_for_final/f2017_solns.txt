@@ -1,0 +1,56 @@
+1a) Everything is not what is seems
+
+1b) Justin, are you sure you don't want to use my graduation speech?  It goes like this, "Later, losers."
+
+1c) Error
+
+1d) Justin.
+
+1e) Alex
+	Max
+
+1f) I am a human.
+
+1g) I am a human.
+
+1h) I am a human.
+	I am also a wizard.
+
+2a)
+	circular_queue &operator=(const circular_queue &q)
+	{
+		v = q.v;
+		size = q.size;
+		front = q.front;
+		back = q.back;
+
+		return *this;
+	}
+
+2b)
+	int grow() 
+	{
+		vector<T> c(size * 2 - 1);
+		int i;
+		try {
+			for (i = 0;; i++) { c[i] = dequeue(); }
+		} catch(...) {}
+
+		v = c;
+		size = size * 2 - 1;
+		front = i;
+		back = size - 1;
+
+		return size - 1;
+	}
+
+3a: True
+3b: True
+3c: False
+3d: True
+3e: True
+3f: True
+3g: True
+3h: False
+3i: True
+3j: False

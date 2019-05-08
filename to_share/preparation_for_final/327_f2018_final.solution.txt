@@ -1,0 +1,79 @@
+
+1)
+	a: Keep the change, ya filthy animal.
+
+	b: Has this toothbrush been approved by the American Dental Association?
+
+	c: Error
+
+	d: Kevin.
+
+	e: Marv.
+	   Harry
+
+	f: Kevin walks down the staircase.
+
+	g: Old Man Marley walks down the staircase.
+
+	h: Harry walks down the staircase.
+	   Harry slips and falls.
+
+ 
+2)
+	circular_queue(circular_queue &q)
+	{
+		v = q.v;
+		size = q.size;
+		front = q.front;
+		back = q.back;
+	}
+
+b: 
+	ostream &operator << (ostream &o, const circular_queue &q) // Does not need to be const but it's conventional
+	{
+		int p = (q.back + 1) % (q.size + 1);
+		o << "{";
+		while (q.p != front)
+		{
+			o << q.v[p];
+			p++;
+			if (p != q.front) { o << ","; }
+			if (p > q.size) { p = 0; }
+		}
+
+		o << "}";
+		return o;
+	}
+ 
+
+3)
+	a: True
+
+	b: False
+
+	c: True
+
+	d: True
+
+	e: False
+
+	f: False
+
+	g: True
+
+	h: True
+
+	i: True
+
+	j: True or False.
+
+ 
+
+EC:
+	Write a haiku.
+	
+	(For example)
+	
+	Jeremy Sheaffer             	(5 syllables)
+	I really like this problem.		(7 syllables)
+	Can I have free A?        		(5 syllables)

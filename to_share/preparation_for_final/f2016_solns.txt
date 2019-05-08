@@ -1,0 +1,23 @@
+1a ok
+1b error
+1c ok
+1d Michael Bolton
+1e Michael Bolton
+1f Joanna (full sentence for all 3 cases)
+   sameer naghee.. (not full sentence) (endl required for displaying sameer..)
+
+3a T
+3b F
+3c T
+3d F
+3e F
+3f F
+3g F
+3h T
+3i T
+3j T
+3k T
+3l T
+3m F
+3n F
+3o F
