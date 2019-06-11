@@ -32,10 +32,78 @@ int write_pgm(char *file, void *image, uint32_t x, uint32_t y) {
     return 0;
 }
 
-int main(int argc, char* argv[]){
+/* A better implementation of this function would read the image dimensions *
+ * from the input and allocate the storage, setting x and y so that the     *
+ * user can determine the size of the file at runtime.  In order to         *
+ * minimize complication, I've written this version to require the user to  *
+ * know the size of the image in advance.                                   */
+int read_pgm(char *file, void *image, uint32_t x, uint32_t y)
+{
+    FILE *f;
+    char s[80];
+    unsigned i, j;
 
-    uint32_t x[3][3] = {{-1,0,1},{-2,0,2},{-1,0,1}};
-    uint32_t y[3][3] = {{-1,-2,-1},{0,0,0},{1,2,1}};
+    if (!(f = fopen(file, "r"))) {
+        perror(file);
+
+        return -1;
+    }
+
+    if (!fgets(s, 80, f) || strncmp(s, "P5", 2)) {
+        fprintf(stderr, "Expected P6\n");
+
+        return -1;
+    }
+
+    /* Eat comments */
+    do {
+        fgets(s, 80, f);
+    } while (s[0] == '#');
+
+    if (sscanf(s, "%u %u", &i, &j) != 2 || i != x || j != y) {
+        fprintf(stderr, "Expected x and y dimensions %u %u\n", x, y);
+        fclose(f);
+
+        return -1;
+    }
+
+    /* Eat comments */
+    do {
+        fgets(s, 80, f);
+    } while (s[0] == '#');
+
+    if (strncmp(s, "255", 3)) {
+        fprintf(stderr, "Expected 255\n");
+        fclose(f);
+
+        return -1;
+    }
+
+    if (fread(image, 1, x * y, f) != x * y) {
+        perror("fread");
+        fclose(f);
+
+        return -1;
+    }
+
+    fclose(f);
+
+    return 0;
+}
+
+int main(int argc, char* argv[]){
+    int8_t image[1024][1024];
+    int8_t output[1024][1024];
+    int32_t x[3][3] = {{-1,0,1},{-2,0,2},{-1,0,1}};
+    int32_t y[3][3] = {{-1,-2,-1},{0,0,0},{1,2,1}};
+
+    /* Example usage of PGM functions */
+    /* This assumes that motorcycle.pgm is a pgm image of size 1024x1024 */
+    read_pgm("motorcycle.pgm", image, 1024, 1024);
+
+    /* After processing the image and storing your output in "out", write *
+    * to motorcycle.edge.pgm.                                            */
+    write_pgm("motorcycle.edge.pgm", output, 1024, 1024);
 
     //Check to make sure that file name was provided
     if(argc == 1){
@@ -50,7 +118,10 @@ int main(int argc, char* argv[]){
     //printf("File Name: %s\n", pFileName);
     //Image pointer, initialized to null to be safe;
     void* pImage = NULL;
-    write_pgm(pFileName,pImage,x,y);
+
+    //Sobel Filter code
+   // for(int r = 0; r < M; )
+
 
     free(pFileName);
     return 0;
