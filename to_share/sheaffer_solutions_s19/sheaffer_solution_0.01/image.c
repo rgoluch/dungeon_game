@@ -92,8 +92,8 @@ int read_pgm(char *file, void *image, uint32_t x, uint32_t y)
 }
 
 int main(int argc, char* argv[]){
-    int8_t image[1024][1024];
-    int8_t output[1024][1024];
+    uint8_t image[1024][1024];
+    uint8_t output[1024][1024];
     int32_t x[3][3] = {{-1,0,1},{-2,0,2},{-1,0,1}};
     int32_t y[3][3] = {{-1,-2,-1},{0,0,0},{1,2,1}};
 
@@ -103,8 +103,7 @@ int main(int argc, char* argv[]){
 
     /* After processing the image and storing your output in "out", write *
     * to motorcycle.edge.pgm.                                            */
-    write_pgm("motorcycle.edge.pgm", output, 1024, 1024);
-
+    
     //Check to make sure that file name was provided
     if(argc == 1){
         printf("Error: No File Name Provided\n");
@@ -119,8 +118,30 @@ int main(int argc, char* argv[]){
     //Image pointer, initialized to null to be safe;
     void* pImage = NULL;
 
-    //Sobel Filter code
-   // for(int r = 0; r < M; )
+    // Sobel Filter code
+   for(int r = 0; r < 1024; r++){
+       for(int c = 0; c < 1024; c++){
+           int16_t accumulator_x = 0;
+           int16_t accumulator_y = 0;
+           int16_t out = 0;
+
+           for(int i = 0; i < 3; i++){
+               for(int j = 0; j < 3; j++){
+                   if(r != 0 && c != 0 && r != 1023 && c != 1023){
+                    accumulator_x = accumulator_x + (x[i][j]*(int16_t)image[r + (int)(j-ceil(3/2))][c + (int)(i-ceil(3/2))]);
+                    accumulator_y = accumulator_y + (y[i][j]*(int16_t)image[r + (int)(j-ceil(3/2))][c + (int)(i-ceil(3/2))]);
+                   }
+               }
+           }
+           out = round(sqrt(pow(accumulator_x, 2) + pow(accumulator_y, 2)));
+           if (out > 255){
+               out = 255;
+           }
+           output[r][c] = out;
+       }
+   }
+
+    write_pgm("motorcycle.edge.pgm", output, 1024, 1024);
 
 
     free(pFileName);
